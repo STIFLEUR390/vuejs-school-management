@@ -90,6 +90,9 @@
 </template>
 
 <script>
+    import UserService from "../../services/user.service"
+    import EventBus from "../../common/EventBus"
+
     export default {
         name: "Dashboard",
         data(){
@@ -104,10 +107,22 @@
             }
         },
         mounted() {
-            this.getData()
+            UserService.getUserSuperAdminBoard().then(
+                response => {
+                    this.data = response.data.data
+                },
+                error => {
+                    this.content = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+
+                    if (error.response && error.response.status === 403) {
+                        EventBus.dispatch("logout")
+                    }
+                }
+            )
+            // this.getData()
         },
         methods: {
-            async getData() {
+            /*async getData() {
                 this.axios.get('/superadmin/dashboard')
                     .then((response) => {
                         this.data = response.data.data
@@ -128,7 +143,7 @@
                         })
                         console.log(error.response)
                     })
-            }
+            }*/
         }
     }
 </script>

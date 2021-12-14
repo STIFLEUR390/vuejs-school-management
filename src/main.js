@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import i18n from './i18n'
+import setupInterceptors from './services/setupInterceptors'
+setupInterceptors(store)
 
 // sweet alert
 import VueSweetalert2 from 'vue-sweetalert2'
@@ -29,9 +31,9 @@ const options = {
 }
 
 axios.defaults.baseURL = 'http://school-management-api.test/api'
-// if (store.state.auth.user) {
-//   axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.auth.user.access_token
-// }
+if (store.state.auth.user) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.auth.user.access_token
+}
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 Vue.use(VueSweetalert2, options)

@@ -2,16 +2,16 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { auth } from './auth.module';
-import createPersistedState from "vuex-persistedstate";
+/*import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
-const ls = new SecureLS({ isCompression: false });
+const ls = new SecureLS({ isCompression: false });*/
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
   },
-  plugins: [
+  /*plugins: [
     createPersistedState({
       storage: {
         getItem: key => ls.get(key),
@@ -19,7 +19,7 @@ export default new Vuex.Store({
         removeItem: key => ls.remove(key)
       }
     })
-  ],
+  ],*/
   mutations: {
   },
   actions: {
