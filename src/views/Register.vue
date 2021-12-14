@@ -17,7 +17,7 @@
                     </div>
                     <form @submit.prevent="handleRegister" name="form">
                         <div class="input-group mb-3">
-                            <input v-model="user.username" v-validate.continues="'required|alpha|min:5'" name="username" type="text" class="form-control" placeholder="Full name">
+                            <input v-model="user.username" v-validate.continues="{ required: true, alpha: true, min: 5 }" name="username" type="text" class="form-control" placeholder="Full name">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-user"></span>
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input v-model="user.email" v-validate.continues="'required|email|max:50'" name="email" type="email" class="form-control" placeholder="Email">
+                            <input v-model="user.email" v-validate.continues="{ required: true, email: true, max: 50 }" name="email" type="email" class="form-control" placeholder="Email">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input v-model="user.password" v-validate.continues="'required|alpha|min:5'" type="password" ref="password" name="password" class="form-control" placeholder="Password">
+                            <input v-model="user.password" v-validate.continues="{ required: true, min: 5 }" type="password" ref="password" name="password" class="form-control" placeholder="Password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input v-model="user.password_confirmation" name="password_confirmation" type="password" class="form-control" placeholder="Retype password">
+                            <input v-model="user.password_confirmation" v-validate.continues="'required|confirmed:password'" data-vv-as="password confirmation" name="password_confirmation" type="password" class="form-control" placeholder="Retype password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-    import User from '../models/user';
+    import User from '../models/user'
 
     export default {
         name: "Register",
@@ -97,39 +97,39 @@
                 successful: false,
                 message: '',
                 check: false,
-            };
+            }
         },
         computed: {
             loggedIn() {
-                return this.$store.state.auth.status.loggedIn;
+                return this.$store.state.auth.status.loggedIn
             }
         },
         mounted() {
             if (this.loggedIn) {
-                this.$router.push({ name: 'SuperAdminDashboard' });
+                this.$router.push({ name: 'SuperAdminDashboard' })
             }
         },
         methods: {
             handleRegister() {
-                this.message = '';
-                this.submitted = true;
+                this.message = ''
+                this.submitted = true
                 this.$validator.validate().then(isValid => {
                     if (isValid) {
                         this.$store.dispatch('auth/register', this.user).then(
                             data => {
-                                this.message = data.message;
-                                this.successful = true;
+                                this.message = data.message
+                                this.successful = true
                             },
                             error => {
                                 this.message =
                                     (error.response && error.response.data) ||
                                     error.message ||
-                                    error.toString();
-                                this.successful = false;
+                                    error.toString()
+                                this.successful = false
                             }
-                        );
+                        )
                     }
-                });
+                })
             }
         }
     }

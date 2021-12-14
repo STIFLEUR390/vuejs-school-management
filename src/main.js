@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import i18n from './i18n'
-// import VeeValidate from 'vee-validate'
 
 // sweet alert
 import VueSweetalert2 from 'vue-sweetalert2'
@@ -35,7 +34,6 @@ axios.defaults.baseURL = 'http://school-management-api.test/api'
 // }
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
-// Vue.use(VeeValidate)
 Vue.use(VueSweetalert2, options)
 Vue.use(VueAxios, axios)
 

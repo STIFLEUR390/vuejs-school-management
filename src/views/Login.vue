@@ -19,9 +19,15 @@
                     </div>
                     <p class="login-box-msg">Sign in to start your session</p>
 
+                    <div v-if="errors.all().length > 0" class="alert alert-danger alert-dismissible mx-2 my-2">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <ul>
+                            <li v-for="(error, id) in errors.all()" :key="id">{{ error }}</li>
+                        </ul>
+                    </div>
                     <form name="form" @submit.prevent="handleLogin">
                         <div class="input-group mb-3">
-                            <input v-model="user.email" type="email" class="form-control" placeholder="Email">
+                            <input v-model="user.email" name="email" v-validate.continues="{ required: true, email: true, max: 50 }" type="email" class="form-control" placeholder="Email">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -29,7 +35,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input v-model="user.password" type="password" class="form-control" placeholder="Password">
+                            <input v-model="user.password" v-validate.continues="{ required: true, min: 5 }" type="password" name="password" class="form-control" placeholder="Password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -79,7 +85,7 @@
 </template>
 
 <script>
-    import User from '../models/user';
+    import User from '../models/user'
 
     export default {
         name: "Login",
@@ -89,41 +95,41 @@
                 loading: false,
                 message: '',
                 check: false
-            };
+            }
         },
         computed: {
             loggedIn() {
-                return this.$store.state.auth.status.loggedIn;
+                return this.$store.state.auth.status.loggedIn
             }
         },
         created() {
             if (this.loggedIn) {
-                this.$router.push({ name: 'SuperAdminDashboard' });
+                this.$router.push({ name: 'SuperAdminDashboard' })
             }
         },
         methods: {
             handleLogin() {
-                this.loading = true;
+                this.loading = true
                 this.$validator.validateAll().then(isValid => {
                     if (!isValid) {
-                        this.loading = false;
-                        return;
+                        this.loading = false
+                        return
                     }
 
                     if (this.user.email && this.user.password) {
                         this.$store.dispatch('auth/login', this.user).then(
                             () => {
-                                this.$router.push({ name: 'SuperAdminDashboard' });
+                                this.$router.push({ name: 'SuperAdminDashboard' })
                             },
                             error => {
-                                this.loading = false;
+                                this.loading = false
                                 this.message =
                                     (error.response && error.response.data) ||
-                                    error.message || error.toString();
+                                    error.message || error.toString()
                             }
-                        );
+                        )
                     }
-                });
+                })
             }
         }
     }

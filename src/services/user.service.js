@@ -1,20 +1,28 @@
-import api from './api';
+import axios from 'axios'
+import authHeader from "./auth-header"
+
+const API_URL = 'http://school-management-api.test/api/'
 
 class UserService {
     getPublicContent() {
-        return api.get('/test/all');
+        return axios.get(API_URL+'all')
+    }
+
+    getUserSuperAdminBoard() {
+        // return axios.get(API_URL+'superadmin/dashboard', { headers: authHeader() })
+        return axios.get(API_URL+'superadmin/dashboard')
     }
 
     getUserBoard() {
-        return api.get('/test/user');
+        return axios.get(API_URL+'user', { headers: authHeader() })
     }
 
     getModeratorBoard() {
-        return api.get('/test/mod');
+        return axios.get(API_URL+'mod', { headers: authHeader() })
     }
 
     getAdminBoard() {
-        return api.get('/test/admin');
+        return axios.get(API_URL+'admin', { headers: authHeader() })
     }
 }
 

@@ -26,7 +26,7 @@ export default new VueI18n({
 })
 
 const i18n = new VueI18n()
-i18n.locale = "fr"
+i18n.locale = "en"
 Vue.use(VeeValidate, {
     // i18nRootKey: 'validations', // customize the root path for validation messages.
    i18n,
