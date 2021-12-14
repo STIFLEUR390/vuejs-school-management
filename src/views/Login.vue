@@ -2,7 +2,7 @@
     <div class="hold-transition login-page">
         <div class="login-box">
             <div class="login-logo">
-                <router-link to="/"><b>Admin</b>LTE</router-link>
+                <router-link to="/"><b>Franck School</b></router-link>
             </div>
             <!-- /.login-logo -->
             <div class="card">

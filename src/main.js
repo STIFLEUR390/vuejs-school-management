@@ -4,16 +4,7 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import i18n from './i18n'
-import { configure } from 'vee-validate'
-import { localize } from '@vee-validate/i18n'
-import en from '@vee-validate/i18n/dist/locale/en.json'
-import fr from '@vee-validate/i18n/dist/locale/fr.json'
-configure({
-  generateMessage: localize({
-    en,
-    fr
-  }),
-})
+// import VeeValidate from 'vee-validate'
 
 // sweet alert
 import VueSweetalert2 from 'vue-sweetalert2'
@@ -44,7 +35,7 @@ axios.defaults.baseURL = 'http://school-management-api.test/api'
 // }
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
-
+// Vue.use(VeeValidate)
 Vue.use(VueSweetalert2, options)
 Vue.use(VueAxios, axios)
 

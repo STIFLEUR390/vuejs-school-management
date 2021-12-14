@@ -2,18 +2,22 @@
     <div class="hold-transition register-page">
         <div class="register-box">
             <div class="register-logo">
-                <router-link to="/"><b>Admin</b>LTE</router-link>
+                <router-link to="/"><b>Franck School</b></router-link>
             </div>
 
             <div class="card">
                 <div v-if="message" class="alert" :class="successful ? 'alert-success' : 'alert-danger'">{{message}}</div>
                 <div class="card-body register-card-body">
                     <p class="login-box-msg">Register a new membership</p>
-
+                    <div v-if="errors.all().length > 0" class="alert alert-danger alert-dismissible mx-2 my-2">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <ul>
+                                <li v-for="(error, id) in errors.all()" :key="id">{{ error }}</li>
+                            </ul>
+                    </div>
                     <form @submit.prevent="handleRegister" name="form">
                         <div class="input-group mb-3">
-                            <div v-if="submitted && errors.has('username')" class="alert-danger">{{errors.first('username')}}</div>
-                            <input v-model="user.username" v-validate="'required|min:3|max:20'" name="username" type="text" class="form-control" placeholder="Full name">
+                            <input v-model="user.username" v-validate.continues="'required|alpha|min:5'" name="username" type="text" class="form-control" placeholder="Full name">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-user"></span>
@@ -21,8 +25,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <div v-if="submitted && errors.has('email')" class="alert-danger">{{errors.first('email')}}</div>
-                            <input v-model="user.email" v-validate="'required|email|max:50'" name="email" type="email" class="form-control" placeholder="Email">
+                            <input v-model="user.email" v-validate.continues="'required|email|max:50'" name="email" type="email" class="form-control" placeholder="Email">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -30,8 +33,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <div v-if="submitted && errors.has('password')" class="alert-danger">{{errors.first('password')}}</div>
-                            <input v-model="user.password" v-validate="'required'" type="password" ref="password" name="password" class="form-control" placeholder="Password">
+                            <input v-model="user.password" v-validate.continues="'required|alpha|min:5'" type="password" ref="password" name="password" class="form-control" placeholder="Password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -39,8 +41,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <div v-if="submitted && errors.has('password_confirmation')" class="alert-danger">{{errors.first('password_confirmation')}}</div>
-                            <input v-model="user.password_confirmation" v-validate="'required|confirmed:password'" data-vv-as="password" name="password_confirmation" type="password" class="form-control" placeholder="Retype password">
+                            <input v-model="user.password_confirmation" name="password_confirmation" type="password" class="form-control" placeholder="Retype password">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
