@@ -160,6 +160,21 @@ const routes = [
         name: 'SuperAdminSubjectEdit',
         component: () => import('../views/SuperAdmin/Subject/Edit')
       },
+      {
+        path: '/superadmin/users/teacher',
+        name: 'SuperAdminTeacherReport',
+        component: () => import('../views/SuperAdmin/Teacher/Teacher')
+      },
+      {
+        path: '/superadmin/users/teacher/create',
+        name: 'SuperAdminTeacherCreate',
+        component: () => import('../views/SuperAdmin/Teacher/Create')
+      },
+      {
+        path: '/superadmin/users/teacher/:id/edit',
+        name: 'SuperAdminTeacherEdit',
+        component: () => import('../views/SuperAdmin/Teacher/Edit')
+      },
     ]
   }
 ]

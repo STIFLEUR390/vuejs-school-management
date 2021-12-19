@@ -31,14 +31,21 @@
                                 <router-link :to="{name: 'SuperAdminSubjectCreate'}" style="float: right;" class="btn btn-primary">{{ $t('add_subject') }}</router-link>
                             </div>
                             <div class="card-body">
+                                <div v-if="errors.all().length > 0" class="alert alert-danger alert-dismissible mx-2 my-2">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <ul>
+                                        <li v-for="(error, id) in errors.all()" :key="id">{{ error }}</li>
+                                    </ul>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>{{ $t('select_a_class') }}</label>
-                                            <select v-model="class_id" class="custom-select" :data-placeholder="$t('select_a_class')"
+                                            <!--<select v-model="class_id" class="custom-select" :data-placeholder="$t('select_a_class')"
                                                     style="width: 100%;">
                                                 <option v-for="(classe, index) in classes" :key="index" :value="classe.id">{{ classe.name }}</option>
-                                            </select>
+                                            </select>-->
+                                            <v-select :options="classes" v-model="class_id"></v-select>
                                         </div>
                                         <!--<div class="form-group">
                                             <label>{{ $t('select_a_class') }}</label>
@@ -92,9 +99,6 @@
     import 'admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4'
     import 'admin-lte/plugins/datatables-responsive/js/dataTables.responsive'
     import 'admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4'
-    /*import 'admin-lte/plugins/select2/css/select2.css'
-    import 'admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.css'
-    import 'admin-lte/plugins/select2/js/select2.full'*/
     import $ from "jquery"
 
     export default {
@@ -108,9 +112,6 @@
         },
         mounted() {
             this.getDataClass()
-            /*$('.select2bs4').select2({
-                theme: 'bootstrap4'
-            })*/
         },
         methods: {
             deleteSubject(id){
@@ -171,28 +172,35 @@
                 })
             },
             getDataSubject() {
-                if (this.class_id) {
-                    this.axios.get("/superadmin/crud?getData=subject&class_id="+this.class_id)
-                        .then((response) => {
-                            if ( $.fn.DataTable.isDataTable('#datatable') ) {
-                                $('#datatable').DataTable().destroy();
-                            }
+                this.$validator.validateAll().then(isValid => {
+                    if (!isValid) {
+                        this.loading = false
+                        return
+                    }
 
-                            this.subjects = response.data.data;
-                            setTimeout(() => {
-                                $("#datatable").DataTable({
-                                    lengthMenu: [
-                                        [5,10, 25, 50, -1],
-                                        [5,10, 25, 50, "All"],
-                                    ],
-                                    pageLength: 5,
+                    if (this.class_id) {
+                        this.axios.get("/superadmin/crud?getData=subject&class_id="+this.class_id.id)
+                            .then((response) => {
+                                if ( $.fn.DataTable.isDataTable('#datatable') ) {
+                                    $('#datatable').DataTable().destroy();
+                                }
+
+                                this.subjects = response.data.data;
+                                setTimeout(() => {
+                                    $("#datatable").DataTable({
+                                        lengthMenu: [
+                                            [5,10, 25, 50, -1],
+                                            [5,10, 25, 50, "All"],
+                                        ],
+                                        pageLength: 5,
+                                    })
                                 })
                             })
-                        })
-                }
+                    }
+                })
             },
             getDataClass() {
-                this.axios.get("/superadmin/crud?getData=class")
+                this.axios.get("/superadmin/crud?getData=class_for_select")
                     .then((response) => {
                         this.classes = response.data.data
                     })

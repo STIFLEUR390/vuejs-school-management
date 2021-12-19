@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import VeeValidate from 'vee-validate'
-import EnvalidationMessages from 'vee-validate/dist/locale/en'
-import FrvalidationMessages from 'vee-validate/dist/locale/fr'
+import EnValidationMessages from 'vee-validate/dist/locale/en'
+import FrValidationMessages from 'vee-validate/dist/locale/fr'
 
 Vue.use(VueI18n)
 
@@ -25,13 +25,13 @@ export default new VueI18n({
   messages: loadLocaleMessages()
 })
 
-const i18n = new VueI18n()
-i18n.locale = "en"
+// const i18n = new VueI18n()
+// i18n.locale = "en"
 Vue.use(VeeValidate, {
     // i18nRootKey: 'validations', // customize the root path for validation messages.
-   i18n,
+   locale: 'en',
    dictionary: {
-    en: EnvalidationMessages,
-    fr: FrvalidationMessages
+    en: EnValidationMessages,
+    fr: FrValidationMessages
    }
 })

@@ -44,17 +44,14 @@
                                 <div class="card-body">
                                     <!--<div class="form-group">
                                         <label>{{ $t('class') }}</label>
-                                        <select class="select2bs4" :data-placeholder="$t('select_a_class')"
-                                                style="width: 100%;">
-                                            <option v-for="(classe, index) in classes" :key="index" :value="classe.id">{{ classe.name }}</option>
+                                        <select class="custom-select" name="class_id" v-model="form.class_id">
+                                            <option v-for="(classe, index) in classes" :key="index" :value="classe.id" :selected="(class_id === classes.id)? 'selected': '0'" >{{ classe.name }}</option>
                                         </select>
                                         <small class="form-text text-muted">{{ $t('select_a_class') }}</small>
                                     </div>-->
                                     <div class="form-group">
                                         <label>{{ $t('class') }}</label>
-                                        <select class="custom-select" name="class_id" v-model="form.class_id">
-                                            <option v-for="(classe, index) in classes" :key="index" :value="classe.id" :selected="(class_id === classes.id)? 'selected': '0'" >{{ classe.name }}</option>
-                                        </select>
+                                        <v-select :options="classes" v-model="form.classe" ></v-select>
                                         <small class="form-text text-muted">{{ $t('select_a_class') }}</small>
                                     </div>
                                     <div class="form-group">
@@ -79,12 +76,6 @@
 </template>
 
 <script>
-    // import 'admin-lte/plugins/select2/css/select2.css'
-    // import 'admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.css'
-    // import 'admin-lte/plugins/jquery/jquery'
-    // import 'admin-lte/plugins/bootstrap/js/bootstrap.bundle'
-    // import 'admin-lte/plugins/select2/js/select2.full'
-    // import $ from "jquery"
 
     export default {
         name: "Edit",
@@ -95,6 +86,12 @@
                 errors: null,
                 classes: [],
                 class_id: null,
+                options: {
+                    apples: 'green',
+                    bananas: 'yellow',
+                    orange: 'orange',
+                },
+                selected: 'apples',
             }
         },
         mounted() {
@@ -106,35 +103,38 @@
         },
         methods: {
             async updatedSubject(){
-                let form = {
-                    name: this.form.name,
-                    class_id: this.class_id,
-                    getData: 'subject'
-                }
-                this.axios.put('/superadmin/crud/'+this.$route.params.id, form)
-                .then((response) => {
-                    this.$swal({
-                        toast: true,
-                        icon: 'success',
-                        title: this.$t(response.data.data.notification, {name: response.data.data.name}),
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 5000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', this.$swal.stopTimer)
-                            toast.addEventListener('mouseleave', this.$swal.resumeTimer)
-                        }
-                    })
-                    this.errors = null
-                })
-                .catch((error) => {
-                    console.log(error.response.data)
-                    if (error.response.data.success === false)
-                    {
-                        this.errors = error.response.data.message
+                let class_id = this.form.classe.id
+                if (class_id) {
+                    let form = {
+                        name: this.form.name,
+                        class_id: class_id,
+                        getData: 'subject'
                     }
-                })
+                    this.axios.put('/superadmin/crud/'+this.$route.params.id, form)
+                        .then((response) => {
+                            this.$swal({
+                                toast: true,
+                                icon: 'success',
+                                title: this.$t(response.data.data.notification, {name: response.data.data.name}),
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                                    toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+                                }
+                            })
+                            this.errors = null
+                        })
+                        .catch((error) => {
+                            console.log(error.response.data)
+                            if (error.response.data.success === false)
+                            {
+                                this.errors = error.response.data.message
+                            }
+                        })
+                }
             },
             async getSubject(){
                 this.axios.get('/superadmin/crud/'+this.$route.params.id+'?getData=subject')
@@ -159,7 +159,7 @@
                     })
             },
             async getDataClass() {
-                this.axios.get("/superadmin/crud?getData=class")
+                this.axios.get("/superadmin/crud?getData=class_for_select")
                     .then((response) => {
                         this.classes = response.data.data
                     })

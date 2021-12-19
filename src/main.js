@@ -7,6 +7,11 @@ import i18n from './i18n'
 import setupInterceptors from './services/setupInterceptors'
 setupInterceptors(store)
 
+//vue select
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
+Vue.component('v-select', vSelect)
+
 // sweet alert
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'

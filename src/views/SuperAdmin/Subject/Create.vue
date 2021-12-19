@@ -35,31 +35,29 @@
                             <!-- /.card-header -->
                             <!-- form start -->
 
-                            <div v-if="errors" class="bg-danger text-white mx-2 my-2">
+                            <div v-if="errors.all().length > 0" class="alert alert-danger alert-dismissible mx-2 my-2">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                 <ul>
-                                    <li v-for="(error, id) in errors" :key="id">{{ error[0] }}</li>
+                                    <li v-for="(error, id) in errors.all()" :key="id">{{ error }}</li>
                                 </ul>
                             </div>
                             <form @submit.prevent="createSubject">
                                 <div class="card-body">
-                                    <div class="form-group">
-                                        <label>{{ $t('class') }}</label>
-                                        <select class="custom-select" name="class_id" v-model="form.class_id">
-                                            <option v-for="(classe, index) in classes" :key="index" :value="classe.id">{{ classe.name }}</option>
-                                        </select>
-                                        <small class="form-text text-muted">{{ $t('select_a_class') }}</small>
-                                    </div>
                                     <!--<div class="form-group">
                                         <label>{{ $t('class') }}</label>
-                                        <select class="select2bs4" :data-placeholder="$t('select_a_class')"
-                                                style="width: 100%;">
-                                            <option v-for="(classe, index) in classes" :key="index" :value="classe.id">{{ classe.name }}</option>
-                                        </select>
+                                        <select2 :options="classes" v-validate.continues="{ required: true }" name="class" v-model="form.class_id">
+                                            <option disabled value="">Select one</option>
+                                        </select2>
                                         <small class="form-text text-muted">{{ $t('select_a_class') }}</small>
                                     </div>-->
                                     <div class="form-group">
+                                        <label>{{ $t('class') }}</label>
+                                        <v-select :options="classes" v-model="class_id" v-validate.continues="{ required: true }" name="classe" ></v-select>
+                                        <small class="form-text text-muted">{{ $t('select_a_class') }}</small>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="name">{{ $t('subject_name') }}</label>
-                                        <input type="text" class="form-control" id="name" name="name" v-model="form.name">
+                                        <input type="text" :name="$t('subject')" v-validate.continues="{ required: true, min: 3 }" class="form-control" id="name" v-model="form.name">
                                         <small class="form-text text-muted">{{ $t('provide_subject_name') }}</small>
                                     </div>
                                 </div>
@@ -79,13 +77,6 @@
 </template>
 
 <script>
-    /*import 'admin-lte/plugins/select2/css/select2.css'
-    import 'admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.css'
-    import 'admin-lte/plugins/jquery/jquery'
-    import 'admin-lte/plugins/bootstrap/js/bootstrap.bundle'
-    import 'admin-lte/plugins/select2/js/select2.full'
-    import $ from "jquery"*/
-
     export default {
         name: "Create",
         data() {
@@ -93,48 +84,61 @@
                 form: {
                     name: '',
                     getData: 'subject',
-                    class_id: null,
                 },
-                classes: null,
-                errors: null,
+                // errors: null,
+                test: null,
+                classes: [],
+                class_id: null,
             }
         },
         mounted() {
             this.getDataClass()
-            /*$('.select2bs4').select2({
-                theme: 'bootstrap4'
-            })*/
         },
         methods: {
             async createSubject(){
-                this.axios.post('/superadmin/crud', this.form)
-                .then((response) => {
-                    console.log(response.data.data.notification)
-                    this.$swal({
-                        toast: true,
-                        icon: 'success',
-                        title: this.$t(response.data.data.notification, {name: response.data.data.name}),
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 5000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', this.$swal.stopTimer)
-                            toast.addEventListener('mouseleave', this.$swal.resumeTimer)
-                        }
-                    })
-                    this.errors = null
-                })
-                .catch((error) => {
-                    console.log(error.response.data)
-                    if (error.response.data.success === false)
-                    {
-                        this.errors = error.response.data.message
+                this.$validator.validateAll().then(isValid => {
+                    if (!isValid) {
+                        this.loading = false
+                        return
                     }
+
+                    let class_id = this.class_id.id
+
+                    let form = {
+                        name: this.form.name,
+                        class_id: class_id,
+                        getData: 'subject'
+                    }
+                    this.axios.post('/superadmin/crud', form)
+                        .then((response) => {
+                            console.log(response.data.data.notification)
+                            this.$swal({
+                                toast: true,
+                                icon: 'success',
+                                title: this.$t(response.data.data.notification, {name: response.data.data.name}),
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                                    toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+                                }
+                            })
+                            this.errors = null
+                        })
+                        .catch((error) => {
+                            console.log(error.response.data)
+                            if (error.response.data.success === false)
+                            {
+                                this.errors = error.response.data.message
+                            }
+                        })
                 })
+
             },
             async getDataClass() {
-                this.axios.get("/superadmin/crud?getData=class")
+                this.axios.get("/superadmin/crud?getData=class_for_select")
                     .then((response) => {
                         this.classes = response.data.data
                     })
@@ -144,5 +148,11 @@
 </script>
 
 <style>
-
+    .select2-selection {
+        border-radius: 0px !important;
+        text-align: left !important;
+    }
+    .select2-dropdown {
+        border-radius: 0px !important;
+    }
 </style>

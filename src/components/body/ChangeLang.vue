@@ -11,6 +11,14 @@
         name: "ChangeLang",
         data () {
             return { langs: ['en', 'fr'] }
+        },
+        mounted() {
+            setInterval(() => {
+                if (this.$i18n.locale !== this.$validator.localize.lang)
+                {
+                    this.$validator.localize(this.$i18n.locale)
+                }
+            }, 500)
         }
     }
 </script>
