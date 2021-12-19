@@ -34,7 +34,7 @@
                                 <table id="datatable" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>{{ $t('id') }}</th>
+                                            <th>{{ $t('parent_id') }}</th>
                                             <th>{{ $t('image') }}</th>
                                             <th>{{ $t('name') }}</th>
                                             <th>{{ $t('email') }}</th>
@@ -46,7 +46,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(user, id) in parents" :key="id">
-                                            <td>{{ id + 1 }}</td>
+                                            <td>{{ user.id }}</td>
                                             <td>
                                                 <img :src="user.image" :alt="user.name" width="40" />
                                             </td>

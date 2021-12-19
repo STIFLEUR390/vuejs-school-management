@@ -34,37 +34,39 @@
                                 <table id="datatable" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>{{ $t('id') }}</th>
                                             <th>{{ $t('image') }}</th>
                                             <th>{{ $t('name') }}</th>
-                                            <th>{{ $t('email') }}</th>
                                             <th>{{ $t('code') }}</th>
-                                            <th>{{ $t('phone') }}</th>
-                                            <th>{{ $t('address') }}</th>
-                                            <th>{{ $t('action') }}</th>
+                                            <th>{{ $t('department') }}</th>
+                                            <th>{{ $t('designation') }}</th>
+                                            <th width="37%">{{ $t('action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(user, id) in teachers" :key="id">
-                                            <td>{{ id + 1 }}</td>
                                             <td>
                                                 <img :src="user.image" :alt="user.name" width="40" />
                                             </td>
                                             <td>{{ user.name }}</td>
-                                            <td>{{ user.email }}</td>
                                             <td>{{ user.code }}</td>
-                                            <td>{{ user.phone }}</td>
-                                            <td>{{ user.address }}</td>
+                                            <td>{{ user.teacher.department.label }}</td>
+                                            <td>{{ user.teacher.designation }}</td>
                                             <td>
                                                 <button v-if="user.deleted_at" @click="restoredUser(user.id)" class="btn btn-outline-success mr-1">
                                                     <i class="fa fa-recycle"></i>
                                                 </button>
-                                                <router-link v-if="!user.deleted_at" :to="{name: 'SuperAdminTeacherEdit', params: { id: user.id }}" class="btn btn-outline-primary mr-1">
+                                                <!--<router-link v-if="!user.deleted_at" :to="{name: 'SuperAdminTeacherEdit', params: { id: user.id }}" class="btn btn-outline-primary mr-1">
                                                     <i class="fa fa-edit"></i>
                                                 </router-link>
                                                 <button v-if="!user.deleted_at" @click="confirmDisabledUser(user.id)" class="btn btn-outline-dark mr-1">
                                                     <i class="fa fa-trash"></i>
-                                                </button>
+                                                </button>-->
+
+                                                <router-link v-if="!user.deleted_at" :to="{name: 'SuperAdminTeacherEdit', params: { id: user.id }}" class="btn btn-primary mr-1">
+                                                    {{ $t('edit')}}
+                                                </router-link>
+                                                <router-link v-if="!user.deleted_at" :to="{name: 'SuperAdminTeacherPermission', params: { id: user.id }}" class="btn btn-info mr-1">{{ $t('permissions') }}</router-link>
+                                                <button v-if="!user.deleted_at" @click="confirmDisabledUser(user.id)" class="btn btn-danger mr-1">{{ $t('delete') }}</button>
                                             </td>
                                         </tr>
                                     </tbody>
