@@ -43,30 +43,92 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(user, id) in teachers" :key="id">
+                                        <tr v-for="(teacher, id) in teachers" :key="id">
                                             <td>
-                                                <img :src="user.image" :alt="user.name" width="40" />
+                                                <img :src="teacher.user.image" :alt="teacher.user.name" width="40" />
                                             </td>
-                                            <td>{{ user.name }}</td>
-                                            <td>{{ user.code }}</td>
-                                            <td>{{ user.teacher.department.label }}</td>
-                                            <td>{{ user.teacher.designation }}</td>
+                                            <td>{{ teacher.user.name }}</td>
+                                            <td>{{ teacher.user.code }}</td>
+                                            <td>{{ teacher.department.name }}</td>
+                                            <td>{{ teacher.designation }}</td>
                                             <td>
-                                                <button v-if="user.deleted_at" @click="restoredUser(user.id)" class="btn btn-outline-success mr-1">
+                                                <button v-if="teacher.user.deleted_at" @click="restoredUser(teacher.user.id)" class="btn btn-outline-success mr-1">
                                                     <i class="fa fa-recycle"></i>
                                                 </button>
-                                                <!--<router-link v-if="!user.deleted_at" :to="{name: 'SuperAdminTeacherEdit', params: { id: user.id }}" class="btn btn-outline-primary mr-1">
-                                                    <i class="fa fa-edit"></i>
-                                                </router-link>
-                                                <button v-if="!user.deleted_at" @click="confirmDisabledUser(user.id)" class="btn btn-outline-dark mr-1">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>-->
-
-                                                <router-link v-if="!user.deleted_at" :to="{name: 'SuperAdminTeacherEdit', params: { id: user.id }}" class="btn btn-primary mr-1">
+                                                <router-link v-if="!teacher.user.deleted_at" :to="{name: 'SuperAdminTeacherEdit', params: { id: teacher.user.id }}" class="btn btn-primary mr-1">
                                                     {{ $t('edit')}}
                                                 </router-link>
-                                                <router-link v-if="!user.deleted_at" :to="{name: 'SuperAdminTeacherPermission', params: { id: user.id }}" class="btn btn-info mr-1">{{ $t('permissions') }}</router-link>
-                                                <button v-if="!user.deleted_at" @click="confirmDisabledUser(user.id)" class="btn btn-danger mr-1">{{ $t('delete') }}</button>
+                                                <button type="button" class="btn btn-info mr-1" data-toggle="modal" :data-target="'#modal-default'+teacher.id"> {{ $t('permissions') }} </button>
+                                                <div class="modal fade" :id="'modal-default'+teacher.id">
+
+<!--                                                    Debut modal-->
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">{{ $t('assigned_permissions') }}</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div v-if="teacher.permissions.length >= 1" class="card-body table-responsive p-0">
+                                                                    <table v-for="(permission, idper) in teacher.permissions" :key="idper" class="table table-hover text-nowrap" style="margin-bottom: 50px !important; border: 1px solid #dee2e6 !important;">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>{{ $t('class') }}</td>
+                                                                                <td>{{ permission.classe.name }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{ $t('section') }}</td>
+                                                                                <td>{{ permission.classe.sections[0].name }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{ $t('marks') }}</td>
+                                                                                <td>
+                                                                                    <i v-if="permission.marks" class="fa fa-circle text-success"></i>
+                                                                                    <i v-else class="fa fa-circle text-danger"></i>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{ $t('assignment') }}</td>
+                                                                                <td>
+                                                                                    <i v-if="permission.assignment" class="fa fa-circle text-success"></i>
+                                                                                    <i v-else class="fa fa-circle text-danger"></i>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{ $t('attendance') }}</td>
+                                                                                <td>
+                                                                                    <i v-if="permission.attendance" class="fa fa-circle text-success"></i>
+                                                                                    <i v-else class="fa fa-circle text-danger"></i>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{ $t('online_exam') }}</td>
+                                                                                <td>
+                                                                                    <i v-if="permission.online_exam" class="fa fa-circle text-success"></i>
+                                                                                    <i v-else class="fa fa-circle text-danger"></i>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <router-link :to="{name: 'SuperAdminTeacherPermission' }" class="btn btn-info btn-block">{{ $t('update_permissions') }}</router-link>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<!--                                                                <button type="button" class="btn btn-primary">Save changes</button>-->
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+<!--                                                Fin modal-->
+
+                                                <button v-if="!teacher.user.deleted_at" @click="confirmDisabledUser(teacher.user.id)" class="btn btn-danger mr-1">{{ $t('delete') }}</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -169,9 +231,7 @@
                             }
                         })
 
-                        setTimeout(() => {
-                            this.$router.push({name: 'Refresh'})
-                        }, 5000)
+                        this.$router.push({name: 'Refresh'})
                     })
                     .catch((error) => {
                         this.$swal({

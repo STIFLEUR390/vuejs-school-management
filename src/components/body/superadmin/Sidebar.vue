@@ -82,6 +82,12 @@
                                     <p>{{ $t('teacher') }}</p>
                                 </router-link>
                             </li>
+                            <li class="nav-item">
+                                <router-link :to="{name: 'SuperAdminTeacherPermission'}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ $t('teacher_permission') }}</p>
+                                </router-link>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">

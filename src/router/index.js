@@ -176,7 +176,7 @@ const routes = [
         component: () => import('../views/SuperAdmin/Teacher/Edit')
       },
       {
-        path: '/superadmin/users/teacher/:id/permission',
+        path: '/superadmin/users/teacher/permission',
         name: 'SuperAdminTeacherPermission',
         component: () => import('../views/SuperAdmin/Teacher/Permission')
       },
