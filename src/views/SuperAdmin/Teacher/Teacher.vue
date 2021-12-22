@@ -89,13 +89,13 @@
                                                                                     <i v-else class="fa fa-circle text-danger"></i>
                                                                                 </td>
                                                                             </tr>
-                                                                            <tr>
+                                                                            <!--<tr>
                                                                                 <td>{{ $t('assignment') }}</td>
                                                                                 <td>
                                                                                     <i v-if="permission.assignment" class="fa fa-circle text-success"></i>
                                                                                     <i v-else class="fa fa-circle text-danger"></i>
                                                                                 </td>
-                                                                            </tr>
+                                                                            </tr>-->
                                                                             <tr>
                                                                                 <td>{{ $t('attendance') }}</td>
                                                                                 <td>
@@ -103,13 +103,13 @@
                                                                                     <i v-else class="fa fa-circle text-danger"></i>
                                                                                 </td>
                                                                             </tr>
-                                                                            <tr>
+                                                                            <!--<tr>
                                                                                 <td>{{ $t('online_exam') }}</td>
                                                                                 <td>
                                                                                     <i v-if="permission.online_exam" class="fa fa-circle text-success"></i>
                                                                                     <i v-else class="fa fa-circle text-danger"></i>
                                                                                 </td>
-                                                                            </tr>
+                                                                            </tr>-->
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
