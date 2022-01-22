@@ -1252,5 +1252,6 @@
     "invoice_list": "Invoice list",
     "paystack_public_test_key": "Paystack public test key",
     "paystack_secret_test_key": "Paystack secret test key",
-    "paystack_secret_live_key": "Paystack secret live key"
+    "paystack_secret_live_key": "Paystack secret live key",
+    "some_of_the_emails_have_been_taken": "Some of the emails have been taken"
 }

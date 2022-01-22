@@ -180,6 +180,21 @@ const routes = [
         name: 'SuperAdminTeacherPermission',
         component: () => import('../views/SuperAdmin/Teacher/Permission')
       },
+      {
+        path: "superadmin/users/student/single-admission",
+        name: "SuperAdminStudentSingleAdmission",
+        component: () => import('../views/SuperAdmin/Student/SingleStudentAdmission')
+      },
+      {
+        path: "superadmin/users/student/bulk-admission",
+        name: "SuperAdminStudentBulkAdmission",
+        component: () => import('../views/SuperAdmin/Student/BulkStudentAdmission')
+      },
+      {
+        path: "superadmin/users/student/excel-admission",
+        name: "SuperAdminStudentExcelAdmission",
+        component: () => import('../views/SuperAdmin/Student/ExcelStudentAdmission')
+      }
     ]
   }
 ]
