@@ -32,6 +32,12 @@
                                     <li v-for="(error, id) in errors.all()" :key="id">{{ error }}</li>
                                 </ul>
                             </div>
+                            <div v-if="errors_n" class="alert alert-danger alert-dismissible mx-2 my-2">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <ul>
+                                    <li v-for="(error_n, id_n) in errors_n" :key="id_n">{{ $t(error_n[0]) }}</li>
+                                </ul>
+                            </div>
                             <div class="card-header p-0 border-bottom-0">
                                 <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                                     <li class="nav-item">
@@ -151,6 +157,7 @@
                 section_id: null,
                 blood_groups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
                 genders: ['male', 'female', 'others'],
+                errors_n: null,
             }
         },
         mounted() {
@@ -183,25 +190,54 @@
                 this.image = event.target.files[0]
             },
             async admintStudent(){
-                let formData = new FormData()
-                formData.append('role', 'student')
-                formData.append('method', 'single')
-                formData.append('image', this.image)
-                formData.append('name', this.form.name)
-                formData.append('email', this.form.email)
-                formData.append('birthday', this.form.birthday)
-                formData.append('gender', this.form.gender)
-                formData.append('blood_group', this.form.blood_group)
-                formData.append('address', this.form.address)
-                formData.append('phone', this.form.phone)
-                formData.append('parent_id', this.parent.id)
-                formData.append('class_id', this.class_id.id)
-                formData.append('section_id', this.section_id.id)
+                this.errors_n = null
+                this.$validator.validateAll().then(isValid => {
+                    if (!isValid) {
+                        this.loading = false
+                        return
+                    }
 
-                // this.axios.post('/superadmin/user', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                    let formData = new FormData()
+                    formData.append('role', 'student')
+                    formData.append('method', 'single')
+                    formData.append('image', this.image)
+                    formData.append('name', this.form.name)
+                    formData.append('email', this.form.email)
+                    formData.append('birthday', this.form.birthday)
+                    formData.append('gender', this.form.gender)
+                    formData.append('blood_group', this.form.blood_group)
+                    formData.append('address', this.form.address)
+                    formData.append('phone', this.form.phone)
+                    formData.append('parent_id', this.parent.id)
+                    formData.append('class_id', this.class_id.id)
+                    formData.append('section_id', this.section_id.id)
 
-                console.log(formData)
-                alert('submitted')
+                    this.axios.post('/superadmin/user', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                        .then((response) => {
+                            console.log(response.data.data.notification)
+                            this.$swal({
+                                toast: true,
+                                icon: 'success',
+                                title: this.$t(response.data.data.notification),
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                                    toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+                                }
+                            })
+                            // this.errors = null
+                        })
+                        .catch((error) => {
+                            console.log(error.response.data)
+                            if (error.response.data.success === false)
+                            {
+                                this.errors_n = error.response.data.message
+                            }
+                        })
+                })
             }
         }
     }

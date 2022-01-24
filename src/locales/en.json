@@ -1253,5 +1253,8 @@
     "paystack_public_test_key": "Paystack public test key",
     "paystack_secret_test_key": "Paystack secret test key",
     "paystack_secret_live_key": "Paystack secret live key",
-    "some_of_the_emails_have_been_taken": "Some of the emails have been taken"
+    "some_of_the_emails_have_been_taken": "Some of the emails have been taken",
+    "sorry_this_phone_has_been_taken": "Sorry this phone number has been taken",
+    "french": "French",
+    "english": "English"
 }
