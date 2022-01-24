@@ -54,7 +54,7 @@
                             <div class="card-body">
                                 <div class="tab-content" id="custom-tabs-four-tabContent">
                                     <div class="tab-pane fade show active">
-                                        <form  @submit.prevent="admintStudent">
+                                        <form @submit.prevent="admintStudent">
                                             <div class="form-group">
                                                 <label for="name">{{ $t('name') }}</label>
                                                 <input type="text" :name="$t('name')" v-validate.continues="{ required: true, min: 3 }" class="form-control" id="name" v-model="form.name">
@@ -117,7 +117,7 @@
                                                 </div>
                                             </div>
 
-                                            <button type="submit" class="btn btn-primary">{{ $t('create_teacher') }}</button>
+                                            <button type="submit" class="btn btn-primary">{{ $t('add_student') }}</button>
                                         </form>
                                     </div>
                                 </div>
