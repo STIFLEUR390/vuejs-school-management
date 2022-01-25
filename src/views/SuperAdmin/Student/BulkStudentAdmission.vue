@@ -149,7 +149,6 @@
                 this.form.splice(index, 1)
             },
             admintBulkStudent() {
-                console.log(this.form)
                 this.errors_n = null
                 this.$validator.validateAll().then(isValid => {
                     if (!isValid) {

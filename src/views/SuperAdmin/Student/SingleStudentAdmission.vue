@@ -158,6 +158,7 @@
                 blood_groups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
                 genders: ['male', 'female', 'others'],
                 errors_n: null,
+                image: null,
             }
         },
         mounted() {
