@@ -194,6 +194,16 @@ const routes = [
         path: "superadmin/users/student/excel-admission",
         name: "SuperAdminStudentExcelAdmission",
         component: () => import('../views/SuperAdmin/Student/ExcelStudentAdmission')
+      },
+      {
+        path: "superadmin/users/student",
+        name: "SuperAdminAllStudents",
+        component: () => import('../views/SuperAdmin/Student/Student')
+      },
+      {
+        path: "superadmin/users/student/:id/edit",
+        name: "SuperAdminEditStudent",
+        component: () => import('../views/SuperAdmin/Student/Edit')
       }
     ]
   }

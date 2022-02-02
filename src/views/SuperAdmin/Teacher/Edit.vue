@@ -170,7 +170,6 @@
         },
         methods: {
             async updateTeacher() {
-                console.log(this.form)
                 this.$validator.validateAll().then(isValid => {
                     if (!isValid) {
                         this.loading = false

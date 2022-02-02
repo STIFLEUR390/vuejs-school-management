@@ -89,6 +89,12 @@
                                 </router-link>
                             </li>
                             <li class="nav-item">
+                                <router-link :to="{name: 'SuperAdminAllStudents'}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>{{ $t('student') }}</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
                                 <router-link :to="{name: 'SuperAdminStudentSingleAdmission'}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>{{ $t('admission') }}</p>
